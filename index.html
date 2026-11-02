@@ -4,555 +4,688 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hearth & Haven — Modern Household Goods</title>
+  <meta name="description" content="Durable, timeless household essentials for kitchen, living, bed & bath and storage." />
 
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Lucide Icons CDN -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Fraunces', 'serif'] },
+          colors: {
+            sand: { 50: '#faf8f5', 100: '#f3efe8', 200: '#e7e0d3', 300: '#d4c9b5' },
+            clay: { 500: '#b5651d', 600: '#9a5418', 700: '#7e4413' },
+            ink: '#1f1b16'
+          }
+        }
+      }
+    }
+  </script>
 
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; }
+    .font-serif { font-variation-settings: 'opsz' 96; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { scrollbar-width: none; }
+    .img-wrap img.failed { display: none; }
+    .fade-up { animation: fadeUp .5s ease both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+    .heart-on svg { fill: #e11d48; stroke: #e11d48; }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
   </style>
 </head>
-<body class="bg-stone-50 text-stone-900 antialiased min-h-screen flex flex-col">
+<body class="bg-sand-50 text-ink antialiased min-h-screen flex flex-col">
 
-  <!-- ================= TOP NOTICE ================= -->
-  <div class="bg-stone-900 text-stone-200 text-xs py-2 px-4 text-center tracking-wider font-medium">
-    Complimentary standard delivery on household orders over $75
+  <!-- Announcement -->
+  <div class="bg-ink text-sand-100 text-xs py-2.5 px-4 text-center tracking-wide">
+    Free standard delivery on orders over <strong class="font-semibold">$75</strong> · 30-day easy returns
   </div>
 
-  <!-- ================= NAVBAR ================= -->
-  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-stone-200">
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-sand-50/85 backdrop-blur-lg border-b border-sand-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20 gap-4">
-        <!-- Brand Logo -->
-        <div class="flex items-center gap-2.5 cursor-pointer" onclick="filterByCategory('all')">
-          <div class="w-10 h-10 rounded-xl bg-amber-700 text-white flex items-center justify-center shadow-sm font-bold">
-            <i data-lucide="home" class="w-5 h-5"></i>
-          </div>
-          <div>
-            <h1 class="text-xl font-bold tracking-tight text-stone-900 leading-none">Hearth &amp; Haven</h1>
-            <span class="text-[11px] text-stone-500 uppercase tracking-widest font-medium">Household Goods</span>
-          </div>
+      <div class="flex items-center justify-between h-[72px] gap-4">
+        <a href="#top" onclick="resetFilters()" class="flex items-center gap-2.5 shrink-0" aria-label="Hearth & Haven home">
+          <span class="w-9 h-9 rounded-full bg-clay-600 text-white flex items-center justify-center"><i data-lucide="flame" class="w-4 h-4"></i></span>
+          <span class="font-serif text-xl font-semibold tracking-tight">Hearth <span class="text-clay-600">&amp;</span> Haven</span>
+        </a>
+
+        <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-stone-600">
+          <a href="#shop" onclick="setCategory('Kitchen')" class="hover:text-ink transition">Kitchen</a>
+          <a href="#shop" onclick="setCategory('Living')" class="hover:text-ink transition">Living</a>
+          <a href="#shop" onclick="setCategory('Bed & Bath')" class="hover:text-ink transition">Bed &amp; Bath</a>
+          <a href="#shop" onclick="setCategory('Storage')" class="hover:text-ink transition">Storage</a>
+        </nav>
+
+        <div class="hidden md:flex flex-1 max-w-sm relative">
+          <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+          <input id="searchInput" type="search" placeholder="Search products…" aria-label="Search products"
+            class="w-full pl-11 pr-4 py-2.5 bg-sand-100 border border-transparent rounded-full text-sm placeholder:text-stone-400 focus:bg-white focus:border-clay-600 focus:outline-none transition" />
         </div>
 
-        <!-- Search Bar -->
-        <div class="hidden md:flex flex-1 max-w-md mx-6 relative">
-          <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-          <input 
-            type="text" 
-            id="searchInput"
-            placeholder="Search cookware, bedding, storage, decor..." 
-            class="w-full pl-10 pr-4 py-2.5 bg-stone-100 border border-transparent rounded-full text-sm focus:bg-white focus:border-amber-700 focus:outline-none transition-all placeholder:text-stone-400"
-          />
+        <div class="flex items-center gap-1.5">
+          <button id="wishToggle" onclick="toggleWishlistView()" class="relative p-2.5 rounded-full hover:bg-sand-100 transition" aria-label="Saved items">
+            <i data-lucide="heart" class="w-5 h-5"></i>
+            <span id="wishBadge" class="hidden absolute top-1 right-0.5 min-w-[16px] h-4 px-1 bg-rose-600 text-white text-[10px] font-bold rounded-full items-center justify-center">0</span>
+          </button>
+          <button id="cartOpenBtn" class="relative flex items-center gap-2 pl-3.5 pr-4 py-2.5 rounded-full bg-ink text-white text-sm font-medium hover:bg-clay-700 transition" aria-label="Open cart">
+            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Cart</span>
+            <span id="cartCountBadge" class="min-w-[20px] h-5 px-1.5 bg-white text-ink text-xs font-bold rounded-full flex items-center justify-center">0</span>
+          </button>
         </div>
-
-        <!-- Cart Button -->
-        <button 
-          id="cartOpenBtn"
-          class="flex items-center gap-2.5 px-4 py-2.5 rounded-full border border-stone-300 hover:border-amber-700 hover:bg-stone-50 transition"
-        >
-          <i data-lucide="shopping-bag" class="w-5 h-5 text-stone-700"></i>
-          <span class="text-sm font-medium">Cart</span>
-          <span id="cartCountBadge" class="w-5 h-5 bg-amber-700 text-white text-xs font-bold rounded-full flex items-center justify-center">0</span>
-        </button>
       </div>
-
-      <!-- Mobile Search Bar -->
-      <div class="pb-4 md:hidden relative">
-        <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-        <input 
-          type="text" 
-          id="mobileSearchInput"
-          placeholder="Search items..." 
-          class="w-full pl-10 pr-4 py-2 bg-stone-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-amber-700"
-        />
+      <div class="pb-3 md:hidden relative">
+        <i data-lucide="search" class="w-4 h-4 text-stone-400 absolute left-4 top-1/2 -translate-y-[60%]"></i>
+        <input id="mobileSearchInput" type="search" placeholder="Search products…" aria-label="Search products"
+          class="w-full pl-11 pr-4 py-2.5 bg-sand-100 rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-clay-600" />
       </div>
     </div>
   </header>
 
-  <!-- ================= HERO SECTION ================= -->
-  <section class="relative bg-stone-900 text-white overflow-hidden py-14 sm:py-20 px-6">
-    <div class="absolute inset-0 opacity-25 mix-blend-overlay">
-      <!-- Local Hero Image -->
-      <img 
-        src="images/hero-bg.jpg" 
-        alt="Household Collection" 
-        class="w-full h-full object-cover" 
-        onerror="this.style.display='none'"
-      />
-    </div>
-    <div class="relative max-w-3xl mx-auto text-center space-y-4">
-      <span class="inline-block px-3 py-1 bg-amber-600/30 text-amber-300 border border-amber-500/30 text-xs font-semibold rounded-full uppercase tracking-wider">
-        Crafted for Everyday Living
-      </span>
-      <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">Elevate Every Corner of Your Home</h2>
-      <p class="text-stone-300 text-base sm:text-lg max-w-xl mx-auto font-light">
-        Durable, timeless, and sustainably crafted household essentials designed to make daily routines comfortable.
-      </p>
+  <!-- Hero -->
+  <section id="top" class="relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 grid lg:grid-cols-12 gap-10 items-center">
+      <div class="lg:col-span-6 fade-up">
+        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-clay-600">
+          <span class="w-8 h-px bg-clay-600"></span> Autumn / Winter Collection
+        </span>
+        <h2 class="font-serif text-4xl sm:text-6xl font-medium leading-[1.05] tracking-tight mt-5">
+          Objects made to be <em class="text-clay-600 not-italic font-normal">lived with.</em>
+        </h2>
+        <p class="mt-5 text-base sm:text-lg text-stone-600 max-w-md leading-relaxed">
+          Timeless, durable household essentials — from cast iron to washed linen — designed to make everyday routines feel a little more considered.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-3">
+          <a href="#shop" class="inline-flex items-center gap-2 px-6 py-3.5 bg-ink text-white rounded-full text-sm font-semibold hover:bg-clay-700 transition">
+            Shop the collection <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+          <a href="#shop" onclick="setCategory('Kitchen')" class="inline-flex items-center gap-2 px-6 py-3.5 border border-sand-300 rounded-full text-sm font-semibold hover:bg-sand-100 transition">
+            Kitchen favourites
+          </a>
+        </div>
+        <dl class="mt-10 flex gap-8 text-sm">
+          <div><dt class="sr-only">Rating</dt><dd class="flex items-center gap-1.5 font-semibold"><i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i> 4.8 average rating</dd></div>
+          <div><dt class="sr-only">Sustainability</dt><dd class="flex items-center gap-1.5 font-semibold text-stone-700"><i data-lucide="leaf" class="w-4 h-4 text-emerald-700"></i> Sustainably made</dd></div>
+        </dl>
+      </div>
+
+      <div class="lg:col-span-6 grid grid-cols-6 grid-rows-6 gap-3 sm:gap-4 h-[380px] sm:h-[480px] fade-up" style="animation-delay:.1s">
+        <div class="img-wrap col-span-4 row-span-6 rounded-[2rem] overflow-hidden relative bg-gradient-to-br from-amber-200 to-orange-300 flex items-center justify-center">
+          <i data-lucide="cooking-pot" class="w-14 h-14 text-white/70"></i>
+          <img src="images/hero-bg.jpg" alt="Hearth & Haven collection" class="absolute inset-0 w-full h-full object-cover" />
+        </div>
+        <div class="img-wrap col-span-2 row-span-3 rounded-[1.5rem] overflow-hidden relative bg-gradient-to-br from-stone-200 to-stone-300 flex items-center justify-center">
+          <i data-lucide="lamp" class="w-8 h-8 text-white/80"></i>
+          <img src="images/table-lamp.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" />
+        </div>
+        <div class="img-wrap col-span-2 row-span-3 rounded-[1.5rem] overflow-hidden relative bg-gradient-to-br from-rose-200 to-amber-200 flex items-center justify-center">
+          <i data-lucide="bed-double" class="w-8 h-8 text-white/80"></i>
+          <img src="images/linen-duvet.jpg" alt="" class="absolute inset-0 w-full h-full object-cover" />
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- ================= MAIN CATALOG ================= -->
-  <main class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
-    <!-- Category Filter Tabs -->
-    <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8">
-      <button class="cat-pill active px-5 py-2 rounded-full text-sm font-medium transition bg-stone-900 text-white whitespace-nowrap" onclick="filterByCategory('all')">All Items</button>
-      <button class="cat-pill px-5 py-2 rounded-full text-sm font-medium transition bg-white text-stone-600 border border-stone-200 hover:border-stone-400 whitespace-nowrap" onclick="filterByCategory('Kitchen')">Kitchen &amp; Dining</button>
-      <button class="cat-pill px-5 py-2 rounded-full text-sm font-medium transition bg-white text-stone-600 border border-stone-200 hover:border-stone-400 whitespace-nowrap" onclick="filterByCategory('Living')">Living &amp; Decor</button>
-      <button class="cat-pill px-5 py-2 rounded-full text-sm font-medium transition bg-white text-stone-600 border border-stone-200 hover:border-stone-400 whitespace-nowrap" onclick="filterByCategory('Bed & Bath')">Bed &amp; Bath</button>
-      <button class="cat-pill px-5 py-2 rounded-full text-sm font-medium transition bg-white text-stone-600 border border-stone-200 hover:border-stone-400 whitespace-nowrap" onclick="filterByCategory('Storage')">Storage &amp; Organization</button>
+  <!-- Value props -->
+  <section class="border-y border-sand-200 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 lg:grid-cols-4 gap-5 text-sm">
+      <div class="flex items-center gap-3"><i data-lucide="truck" class="w-5 h-5 text-clay-600 shrink-0"></i><span><strong class="block font-semibold">Free delivery</strong><span class="text-stone-500">On orders over $75</span></span></div>
+      <div class="flex items-center gap-3"><i data-lucide="rotate-ccw" class="w-5 h-5 text-clay-600 shrink-0"></i><span><strong class="block font-semibold">30-day returns</strong><span class="text-stone-500">Hassle-free</span></span></div>
+      <div class="flex items-center gap-3"><i data-lucide="shield-check" class="w-5 h-5 text-clay-600 shrink-0"></i><span><strong class="block font-semibold">Built to last</strong><span class="text-stone-500">Quality guaranteed</span></span></div>
+      <div class="flex items-center gap-3"><i data-lucide="leaf" class="w-5 h-5 text-clay-600 shrink-0"></i><span><strong class="block font-semibold">Sustainably crafted</strong><span class="text-stone-500">Natural materials</span></span></div>
+    </div>
+  </section>
+
+  <!-- Shop -->
+  <main id="shop" class="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 w-full scroll-mt-20">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+      <div>
+        <h3 id="shopTitle" class="font-serif text-3xl sm:text-4xl font-medium tracking-tight">Shop all</h3>
+        <p id="resultCount" class="text-sm text-stone-500 mt-1"></p>
+      </div>
+      <div class="flex items-center gap-2">
+        <label for="sortSelect" class="text-sm text-stone-500">Sort</label>
+        <div class="relative">
+          <select id="sortSelect" class="appearance-none bg-white border border-sand-300 rounded-full pl-4 pr-10 py-2.5 text-sm font-medium focus:outline-none focus:border-clay-600">
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: low to high</option>
+            <option value="price-desc">Price: high to low</option>
+            <option value="rating">Top rated</option>
+          </select>
+          <i data-lucide="chevron-down" class="w-4 h-4 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-stone-500"></i>
+        </div>
+      </div>
     </div>
 
-    <!-- Product Grid -->
-    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"></div>
+    <div id="categoryTabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-4 mb-8" role="tablist"></div>
 
-    <!-- Empty State -->
-    <div id="noResults" class="hidden text-center py-20">
-      <i data-lucide="package-search" class="w-12 h-12 text-stone-400 mx-auto mb-3"></i>
-      <h3 class="text-lg font-semibold text-stone-700">No items match your criteria</h3>
-      <p class="text-stone-500 text-sm mt-1">Try another keyword or select a different category.</p>
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-5 gap-y-9"></div>
+
+    <div id="noResults" class="hidden text-center py-24">
+      <i data-lucide="search-x" class="w-12 h-12 text-stone-300 mx-auto mb-4"></i>
+      <h4 id="noResultsTitle" class="text-lg font-semibold">No items match your search</h4>
+      <p id="noResultsText" class="text-stone-500 text-sm mt-1">Try another keyword or choose a different category.</p>
+      <button onclick="resetFilters()" class="mt-5 px-5 py-2.5 rounded-full border border-sand-300 text-sm font-semibold hover:bg-sand-100 transition">Clear filters</button>
     </div>
   </main>
 
-  <!-- ================= CART DRAWER ================= -->
-  <div id="cartModal" class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0">
-    <div id="cartBackdrop" class="absolute inset-0 bg-stone-900/50 backdrop-blur-sm pointer-events-auto"></div>
-    <div class="absolute inset-y-0 right-0 max-w-full flex pl-10 pointer-events-auto">
-      <div id="cartDrawer" class="w-screen max-w-md bg-white shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out">
-        
-        <!-- Header -->
-        <div class="flex items-center justify-between px-6 py-5 border-b border-stone-200">
-          <div class="flex items-center gap-2">
-            <i data-lucide="shopping-bag" class="w-5 h-5 text-amber-700"></i>
-            <h3 class="text-lg font-bold text-stone-900">Your Basket</h3>
-          </div>
-          <button id="cartCloseBtn" class="p-1.5 rounded-lg text-stone-400 hover:text-stone-700 hover:bg-stone-100">
-            <i data-lucide="x" class="w-5 h-5"></i>
-          </button>
-        </div>
-
-        <!-- Items Container -->
-        <div id="cartItemList" class="flex-1 overflow-y-auto p-6 space-y-4"></div>
-
-        <!-- Footer -->
-        <div class="p-6 border-t border-stone-200 bg-stone-50 space-y-4">
-          <div class="space-y-2 text-sm text-stone-600">
-            <div class="flex justify-between">
-              <span>Subtotal</span>
-              <span id="cartSubtotal" class="font-semibold text-stone-900">$0.00</span>
-            </div>
-            <div class="flex justify-between text-xs">
-              <span>Shipping</span>
-              <span class="text-emerald-700 font-medium">Free standard delivery</span>
-            </div>
-            <div class="border-t border-stone-200 pt-2 flex justify-between text-base font-bold text-stone-900">
-              <span>Total</span>
-              <span id="cartTotal">$0.00</span>
-            </div>
-          </div>
-          <button 
-            id="openCheckoutBtn" 
-            class="w-full bg-amber-700 text-white py-3.5 rounded-xl font-semibold hover:bg-amber-800 transition disabled:opacity-50 disabled:cursor-not-allowed shadow-md shadow-amber-700/20"
-          >
-            Checkout Now
-          </button>
-        </div>
-
+  <!-- Newsletter -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-16">
+    <div class="rounded-[2rem] bg-ink text-white px-6 sm:px-14 py-12 grid md:grid-cols-2 gap-8 items-center">
+      <div>
+        <h3 class="font-serif text-3xl font-medium tracking-tight">Slow mail, good things.</h3>
+        <p class="text-stone-400 mt-2 text-sm max-w-sm">Care guides, new arrivals and 10% off your first order. No spam, ever.</p>
       </div>
+      <form onsubmit="subscribe(event)" class="flex gap-2">
+        <input type="email" required placeholder="you@example.com" aria-label="Email address" class="flex-1 min-w-0 px-5 py-3.5 rounded-full bg-white/10 border border-white/15 text-sm placeholder:text-stone-500 focus:outline-none focus:border-amber-400" />
+        <button class="px-6 py-3.5 rounded-full bg-amber-500 text-ink text-sm font-semibold hover:bg-amber-400 transition">Subscribe</button>
+      </form>
     </div>
-  </div>
+  </section>
 
-  <!-- ================= CHECKOUT MODAL ================= -->
-  <div id="checkoutModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm hidden">
-    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
-      <button id="closeCheckoutBtn" class="absolute top-5 right-5 text-stone-400 hover:text-stone-700">
-        <i data-lucide="x" class="w-5 h-5"></i>
-      </button>
-
-      <!-- Form View -->
-      <div id="checkoutFormWrapper">
-        <h3 class="text-xl font-bold text-stone-900 mb-1">Shipping Details</h3>
-        <p class="text-xs text-stone-500 mb-5">Provide your address for household delivery.</p>
-
-        <form id="checkoutForm" class="space-y-3.5" onsubmit="handleOrderSubmit(event)">
-          <div>
-            <label class="block text-xs font-semibold text-stone-600 uppercase mb-1">Full Name</label>
-            <input type="text" required placeholder="Alex Turner" class="w-full px-3.5 py-2.5 border border-stone-300 rounded-lg text-sm focus:border-amber-700 focus:outline-none" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-stone-600 uppercase mb-1">Email Address</label>
-            <input type="email" required placeholder="alex@example.com" class="w-full px-3.5 py-2.5 border border-stone-300 rounded-lg text-sm focus:border-amber-700 focus:outline-none" />
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-stone-600 uppercase mb-1">Delivery Address</label>
-            <input type="text" required placeholder="452 Elm Avenue, Suite 3" class="w-full px-3.5 py-2.5 border border-stone-300 rounded-lg text-sm focus:border-amber-700 focus:outline-none" />
-          </div>
-          <div class="grid grid-cols-2 gap-3">
-            <div>
-              <label class="block text-xs font-semibold text-stone-600 uppercase mb-1">City</label>
-              <input type="text" required placeholder="Chicago" class="w-full px-3.5 py-2.5 border border-stone-300 rounded-lg text-sm focus:border-amber-700 focus:outline-none" />
-            </div>
-            <div>
-              <label class="block text-xs font-semibold text-stone-600 uppercase mb-1">Zip Code</label>
-              <input type="text" required placeholder="60601" class="w-full px-3.5 py-2.5 border border-stone-300 rounded-lg text-sm focus:border-amber-700 focus:outline-none" />
-            </div>
-          </div>
-          
-          <div class="pt-2">
-            <button type="submit" class="w-full bg-amber-700 text-white py-3 rounded-xl font-semibold hover:bg-amber-800 transition">
-              Place Order &bull; <span id="checkoutOrderTotal">$0.00</span>
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <!-- Confirmation View -->
-      <div id="checkoutSuccessWrapper" class="hidden text-center py-6 space-y-3">
-        <div class="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-2">
-          <i data-lucide="check" class="w-7 h-7"></i>
-        </div>
-        <h4 class="text-2xl font-bold text-stone-900">Order Confirmed!</h4>
-        <p class="text-sm text-stone-600">Your household goods have been processed for dispatch. We will send updates to your email.</p>
-        <button onclick="dismissCheckoutSuccess()" class="mt-4 px-6 py-2.5 bg-stone-900 text-white rounded-lg text-sm font-semibold hover:bg-stone-800 transition">
-          Back to Shop
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= POPUP TOAST ================= -->
-  <div id="toast" class="fixed bottom-6 right-6 z-50 bg-stone-900 text-white px-4 py-3 rounded-xl shadow-xl flex items-center gap-3 transition-transform duration-300 translate-y-24">
-    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
-    <span id="toastMessage" class="text-sm font-medium">Added to cart!</span>
-  </div>
-
-  <!-- ================= FOOTER ================= -->
-  <footer class="bg-white border-t border-stone-200 mt-auto py-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
-      <p>&copy; Hearth &amp; Haven Co. Household necessities made for daily living.</p>
-      <div class="flex gap-6">
-        <span class="hover:underline cursor-pointer">Care Guides</span>
-        <span class="hover:underline cursor-pointer">Shipping &amp; Returns</span>
-        <span class="hover:underline cursor-pointer">Support</span>
+  <!-- Footer -->
+  <footer class="bg-white border-t border-sand-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-stone-500">
+      <p>&copy; <span id="year"></span> Hearth &amp; Haven Co. Household essentials made for daily living.</p>
+      <div class="flex gap-6 font-medium">
+        <a href="#" class="hover:text-ink">Care Guides</a>
+        <a href="#" class="hover:text-ink">Shipping &amp; Returns</a>
+        <a href="#" class="hover:text-ink">Support</a>
       </div>
     </div>
   </footer>
 
-  <!-- ================= LOGIC SCRIPT ================= -->
+  <!-- Cart drawer -->
+  <div id="cartModal" class="fixed inset-0 z-50 pointer-events-none opacity-0 transition-opacity duration-300" aria-hidden="true">
+    <div id="cartBackdrop" class="absolute inset-0 bg-ink/50 backdrop-blur-sm"></div>
+    <aside id="cartDrawer" class="absolute inset-y-0 right-0 w-full max-w-md bg-white shadow-2xl flex flex-col translate-x-full transition-transform duration-300 ease-out" role="dialog" aria-label="Shopping cart">
+      <div class="flex items-center justify-between px-6 py-5 border-b border-sand-200">
+        <h3 class="font-serif text-xl font-medium">Your basket</h3>
+        <button id="cartCloseBtn" class="p-2 rounded-full hover:bg-sand-100 transition" aria-label="Close cart"><i data-lucide="x" class="w-5 h-5"></i></button>
+      </div>
+
+      <div id="shipProgress" class="px-6 py-4 bg-sand-50 border-b border-sand-200">
+        <p id="shipText" class="text-xs font-medium text-stone-600"></p>
+        <div class="mt-2 h-1.5 rounded-full bg-sand-200 overflow-hidden"><div id="shipBar" class="h-full bg-clay-600 rounded-full transition-all duration-500" style="width:0%"></div></div>
+      </div>
+
+      <div id="cartItemList" class="flex-1 overflow-y-auto px-6 py-2"></div>
+
+      <div class="px-6 py-5 border-t border-sand-200 bg-white space-y-4">
+        <dl class="space-y-2 text-sm text-stone-600">
+          <div class="flex justify-between"><dt>Subtotal</dt><dd id="cartSubtotal" class="font-medium text-ink">$0.00</dd></div>
+          <div class="flex justify-between"><dt>Shipping</dt><dd id="cartShipping" class="font-medium text-ink">—</dd></div>
+          <div class="flex justify-between pt-3 border-t border-sand-200 text-base font-semibold text-ink"><dt>Total</dt><dd id="cartTotal">$0.00</dd></div>
+        </dl>
+        <button id="openCheckoutBtn" class="w-full bg-ink text-white py-4 rounded-full font-semibold hover:bg-clay-700 transition disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"><i data-lucide="message-circle" class="w-4 h-4"></i> Order via WhatsApp</button>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Quick view -->
+  <div id="quickModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 bg-ink/60 backdrop-blur-sm">
+    <div class="bg-white rounded-[1.75rem] max-w-3xl w-full overflow-hidden grid md:grid-cols-2 relative shadow-2xl" role="dialog" aria-label="Product details">
+      <button onclick="closeQuick()" class="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/90 hover:bg-white shadow" aria-label="Close"><i data-lucide="x" class="w-4 h-4"></i></button>
+      <div id="quickImage" class="img-wrap relative aspect-square md:aspect-auto md:min-h-[420px] flex items-center justify-center"></div>
+      <div id="quickBody" class="p-7 sm:p-9 flex flex-col"></div>
+    </div>
+  </div>
+
+  <!-- Checkout -->
+  <div id="checkoutModal" class="hidden fixed inset-0 z-50 items-center justify-center p-4 bg-ink/60 backdrop-blur-sm overflow-y-auto">
+    <div class="bg-white rounded-[1.75rem] max-w-3xl w-full shadow-2xl relative my-auto" role="dialog" aria-label="Checkout">
+      <button id="closeCheckoutBtn" class="absolute top-5 right-5 p-2 rounded-full hover:bg-sand-100 z-10" aria-label="Close checkout"><i data-lucide="x" class="w-5 h-5"></i></button>
+
+      <div id="checkoutFormWrapper" class="grid md:grid-cols-5">
+        <div class="md:col-span-3 p-7 sm:p-9">
+          <h3 class="font-serif text-2xl font-medium">Delivery details</h3>
+          <p class="text-xs text-stone-500 mt-1 mb-6">Fill in your details and we'll open WhatsApp with your order ready to send. We'll confirm payment and delivery there.</p>
+          <form id="checkoutForm" class="space-y-4" onsubmit="handleOrderSubmit(event)">
+            <div>
+              <label for="f-name" class="block text-xs font-semibold text-stone-600 mb-1.5">Full name</label>
+              <input id="f-name" type="text" required autocomplete="name" placeholder="Alex Turner" class="w-full px-4 py-3 border border-sand-300 rounded-xl text-sm focus:border-clay-600 focus:outline-none" />
+            </div>
+            <div>
+              <label for="f-phone" class="block text-xs font-semibold text-stone-600 mb-1.5">Phone / WhatsApp number</label>
+              <input id="f-phone" type="tel" required autocomplete="tel" inputmode="tel" pattern="[0-9+\s\-()]{7,}" placeholder="+91 98765 43210" class="w-full px-4 py-3 border border-sand-300 rounded-xl text-sm focus:border-clay-600 focus:outline-none" />
+            </div>
+            <div>
+              <label for="f-addr" class="block text-xs font-semibold text-stone-600 mb-1.5">Address</label>
+              <input id="f-addr" type="text" required autocomplete="street-address" placeholder="452 Elm Avenue, Suite 3" class="w-full px-4 py-3 border border-sand-300 rounded-xl text-sm focus:border-clay-600 focus:outline-none" />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label for="f-city" class="block text-xs font-semibold text-stone-600 mb-1.5">City</label>
+                <input id="f-city" type="text" required autocomplete="address-level2" placeholder="Chicago" class="w-full px-4 py-3 border border-sand-300 rounded-xl text-sm focus:border-clay-600 focus:outline-none" />
+              </div>
+              <div>
+                <label for="f-zip" class="block text-xs font-semibold text-stone-600 mb-1.5">Postal code</label>
+                <input id="f-zip" type="text" required autocomplete="postal-code" placeholder="60601" class="w-full px-4 py-3 border border-sand-300 rounded-xl text-sm focus:border-clay-600 focus:outline-none" />
+              </div>
+            </div>
+            <div>
+              <label for="f-notes" class="block text-xs font-semibold text-stone-600 mb-1.5">Notes <span class="font-normal text-stone-400">(optional)</span></label>
+              <textarea id="f-notes" rows="2" placeholder="Landmark, preferred delivery time…" class="w-full px-4 py-3 border border-sand-300 rounded-xl text-sm focus:border-clay-600 focus:outline-none resize-none"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-[#25D366] text-white py-4 rounded-full font-semibold hover:bg-[#1ebe5b] transition mt-2 flex items-center justify-center gap-2">
+              <i data-lucide="send" class="w-4 h-4"></i> Send order on WhatsApp · <span id="checkoutOrderTotal">$0.00</span>
+            </button>
+          </form>
+        </div>
+        <div class="md:col-span-2 bg-sand-50 p-7 sm:p-9 md:rounded-r-[1.75rem] border-t md:border-t-0 md:border-l border-sand-200">
+          <h4 class="text-sm font-semibold mb-4">Order summary</h4>
+          <ul id="checkoutItems" class="space-y-3 text-sm"></ul>
+          <dl class="mt-5 pt-4 border-t border-sand-200 space-y-2 text-sm text-stone-600">
+            <div class="flex justify-between"><dt>Subtotal</dt><dd id="sumSubtotal" class="text-ink">$0.00</dd></div>
+            <div class="flex justify-between"><dt>Shipping</dt><dd id="sumShipping" class="text-ink">$0.00</dd></div>
+            <div class="flex justify-between font-semibold text-ink pt-2"><dt>Total</dt><dd id="sumTotal">$0.00</dd></div>
+          </dl>
+        </div>
+      </div>
+
+      <div id="checkoutSuccessWrapper" class="hidden text-center px-8 py-14">
+        <div class="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto mb-5"><i data-lucide="check" class="w-8 h-8"></i></div>
+        <h4 class="font-serif text-3xl font-medium">Almost done — send it on WhatsApp</h4>
+        <p class="text-sm text-stone-600 mt-3">Order <strong id="orderNumber" class="text-ink"></strong> is ready. WhatsApp should have opened with your details — just press <strong>Send</strong> there to place the order.</p>
+        <a id="waRetryLink" href="#" target="_blank" rel="noopener" class="mt-6 inline-flex items-center gap-2 px-6 py-3 bg-[#25D366] text-white rounded-full text-sm font-semibold hover:bg-[#1ebe5b] transition"><i data-lucide="message-circle" class="w-4 h-4"></i> Open WhatsApp again</a>
+        <div><button onclick="dismissCheckoutSuccess()" class="mt-4 px-7 py-3 text-sm font-semibold text-stone-600 hover:text-ink transition">Continue shopping</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[60] bg-ink text-white px-5 py-3 rounded-full shadow-xl flex items-center gap-2.5 transition-all duration-300 translate-y-24 opacity-0" role="status" aria-live="polite">
+    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toastMessage" class="text-sm font-medium"></span>
+  </div>
+
   <script>
-    // Local Product Catalog pointing directly to your 'images/' folder
+    // ---------- Catalog (image paths kept from your folder) ----------
     const products = [
-      {
-        id: 1,
-        title: "Cast Iron Enameled Dutch Oven",
-        category: "Kitchen",
-        price: 89.00,
-        rating: 4.9,
-        image: "images/173854.jpg",
-        description: "Heavy-duty 5.5-quart cast iron pot with durable enamel coating for stews, soups, and artisan breads."
-      },
-      {
-        id: 2,
-        title: "Handcrafted Stoneware Dinner Set",
-        category: "Kitchen",
-        price: 64.00,
-        rating: 4.8,
-        image: "images/173854.jpg",
-        description: "Matte-glazed natural ceramic plates and bowls designed for everyday family dining."
-      },
-      {
-        id: 3,
-        title: "Organic Waffle Bath Towel Set",
-        category: "Bed & Bath",
-        price: 42.00,
-        rating: 4.7,
-        image: "images/173854.jpg",
-        description: "100% Turkish organic cotton bath sheets featuring high absorbency and quick-drying weave."
-      },
-      {
-        id: 4,
-        title: "Amber Glass Ambient Table Lamp",
-        category: "Living",
-        price: 52.00,
-        rating: 4.9,
-        image: "images/table-lamp.jpg",
-        description: "Ribbed blown-glass accent lamp providing soft, warm illumination to living rooms and bedside tables."
-      },
-      {
-        id: 5,
-        title: "Handwoven Jute Storage Basket",
-        category: "Storage",
-        price: 34.00,
-        rating: 4.6,
-        image: "images/storage-basket.jpg",
-        description: "Sturdy braided natural jute basket with leather handles, perfect for throws, cushions, and toys."
-      },
-      {
-        id: 6,
-        title: "Stainless Steel French Coffee Press",
-        category: "Kitchen",
-        price: 38.00,
-        rating: 4.9,
-        image: "images/french-press.jpg",
-        description: "Double-wall insulated coffee maker designed to brew smooth, hot, and full-bodied morning coffee."
-      },
-      {
-        id: 7,
-        title: "French Washed Linen Duvet Cover",
-        category: "Bed & Bath",
-        price: 119.00,
-        rating: 4.9,
-        image: "images/linen-duvet.jpg",
-        description: "Breathable pure flax linen that gets softer with every wash for temperature-balanced rest."
-      },
-      {
-        id: 8,
-        title: "Botanical Soy Wax Scented Candle",
-        category: "Living",
-        price: 24.00,
-        rating: 4.7,
-        image: "images/soy-candle.jpg",
-        description: "Hand-poured candle with cedarwood and wild amber notes in an amber glass jar. 55-hour burn."
-      }
+      { id: 1, title: "Cast Iron Enameled Dutch Oven", category: "Kitchen", price: 89.00, rating: 4.9, image: "images/173854.jpg", description: "Heavy-duty 5.5-quart cast iron pot with durable enamel coating for stews, soups, and artisan breads." },
+      { id: 2, title: "Handcrafted Stoneware Dinner Set", category: "Kitchen", price: 64.00, rating: 4.8, image: "images/173854.jpg", description: "Matte-glazed natural ceramic plates and bowls designed for everyday family dining." },
+      { id: 3, title: "Organic Waffle Bath Towel Set", category: "Bed & Bath", price: 42.00, rating: 4.7, image: "images/173854.jpg", description: "100% Turkish organic cotton bath sheets featuring high absorbency and quick-drying weave." },
+      { id: 4, title: "Amber Glass Ambient Table Lamp", category: "Living", price: 52.00, rating: 4.9, image: "images/table-lamp.jpg", description: "Ribbed blown-glass accent lamp providing soft, warm illumination to living rooms and bedside tables." },
+      { id: 5, title: "Handwoven Jute Storage Basket", category: "Storage", price: 34.00, rating: 4.6, image: "images/storage-basket.jpg", description: "Sturdy braided natural jute basket with leather handles, perfect for throws, cushions, and toys." },
+      { id: 6, title: "Stainless Steel French Coffee Press", category: "Kitchen", price: 38.00, rating: 4.9, image: "images/french-press.jpg", description: "Double-wall insulated coffee maker designed to brew smooth, hot, and full-bodied morning coffee." },
+      { id: 7, title: "French Washed Linen Duvet Cover", category: "Bed & Bath", price: 119.00, rating: 4.9, image: "images/linen-duvet.jpg", description: "Breathable pure flax linen that gets softer with every wash for temperature-balanced rest." },
+      { id: 8, title: "Botanical Soy Wax Scented Candle", category: "Living", price: 24.00, rating: 4.7, image: "images/soy-candle.jpg", description: "Hand-poured candle with cedarwood and wild amber notes in an amber glass jar. 55-hour burn." }
     ];
 
-    // State Variables
-    let cart = [];
+    const categories = [
+      { key: 'all', label: 'All', icon: 'layout-grid' },
+      { key: 'Kitchen', label: 'Kitchen & Dining', icon: 'cooking-pot' },
+      { key: 'Living', label: 'Living & Decor', icon: 'lamp' },
+      { key: 'Bed & Bath', label: 'Bed & Bath', icon: 'bed-double' },
+      { key: 'Storage', label: 'Storage & Organization', icon: 'package' }
+    ];
+    const catStyle = {
+      'Kitchen': 'from-amber-200 to-orange-300', 'Living': 'from-yellow-100 to-amber-300',
+      'Bed & Bath': 'from-rose-100 to-stone-300', 'Storage': 'from-stone-200 to-amber-200'
+    };
+    const catIcon = { 'Kitchen': 'cooking-pot', 'Living': 'lamp', 'Bed & Bath': 'bed-double', 'Storage': 'package' };
+
+    // >>> Put YOUR WhatsApp number here: country code + number, digits only (no +, spaces or dashes).
+    // Example for India: 919876543210
+    const WHATSAPP_NUMBER = '919633535966';
+
+    const FREE_SHIPPING_AT = 75;
+    const SHIPPING_FEE = 6.95;
+
+    // ---------- State (cart + wishlist persist in localStorage) ----------
+    const store = {
+      get(k, d) { try { return JSON.parse(localStorage.getItem(k)) ?? d; } catch { return d; } },
+      set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+    };
+    let cart = store.get('hh_cart', []).filter(i => products.some(p => p.id === i.id)); // [{id, quantity}]
+    let wishlist = store.get('hh_wish', []);
     let currentCategory = 'all';
     let searchQuery = '';
+    let sortBy = 'featured';
+    let wishlistOnly = false;
+    let quickId = null, quickQty = 1;
 
-    // Render Product Catalog
+    const $ = id => document.getElementById(id);
+    const money = n => '$' + n.toFixed(2);
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const byId = id => products.find(p => p.id === id);
+    const icons = () => lucide.createIcons();
+
+    // Hide broken images so the gradient + icon placeholder behind them shows
+    document.addEventListener('error', e => {
+      if (e.target.tagName === 'IMG') e.target.classList.add('failed');
+    }, true);
+
+    function imageBlock(p, cls = '') {
+      return `<div class="img-wrap relative bg-gradient-to-br ${catStyle[p.category]} flex items-center justify-center ${cls}">
+        <i data-lucide="${catIcon[p.category]}" class="w-10 h-10 text-white/70"></i>
+        <img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover" />
+      </div>`;
+    }
+
+    // ---------- Categories ----------
+    function renderTabs() {
+      $('categoryTabs').innerHTML = categories.map(c => {
+        const active = !wishlistOnly && currentCategory === c.key;
+        return `<button role="tab" aria-selected="${active}" onclick="setCategory('${c.key}')"
+          class="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition border ${active ? 'bg-ink text-white border-ink' : 'bg-white text-stone-600 border-sand-300 hover:border-stone-500'}">
+          <i data-lucide="${c.icon}" class="w-4 h-4"></i>${c.label}</button>`;
+      }).join('');
+    }
+
+    function setCategory(key) {
+      currentCategory = key;
+      wishlistOnly = false;
+      renderAll();
+    }
+
+    function resetFilters() {
+      currentCategory = 'all'; searchQuery = ''; wishlistOnly = false;
+      $('searchInput').value = ''; $('mobileSearchInput').value = '';
+      renderAll();
+    }
+
+    function toggleWishlistView() {
+      wishlistOnly = !wishlistOnly;
+      renderAll();
+      $('shop').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ---------- Products ----------
+    function getVisible() {
+      const q = searchQuery.toLowerCase();
+      let list = products.filter(p =>
+        (currentCategory === 'all' || p.category === currentCategory) &&
+        (!wishlistOnly || wishlist.includes(p.id)) &&
+        (p.title.toLowerCase().includes(q) || p.description.toLowerCase().includes(q) || p.category.toLowerCase().includes(q))
+      );
+      if (sortBy === 'price-asc') list.sort((a, b) => a.price - b.price);
+      if (sortBy === 'price-desc') list.sort((a, b) => b.price - a.price);
+      if (sortBy === 'rating') list.sort((a, b) => b.rating - a.rating);
+      return list;
+    }
+
     function renderProducts() {
-      const grid = document.getElementById('productGrid');
-      const noResults = document.getElementById('noResults');
+      const list = getVisible();
+      const label = wishlistOnly ? 'Saved items' : (categories.find(c => c.key === currentCategory).key === 'all' ? 'Shop all' : categories.find(c => c.key === currentCategory).label);
+      $('shopTitle').textContent = label;
+      $('resultCount').textContent = `${list.length} ${list.length === 1 ? 'product' : 'products'}`;
 
-      const filtered = products.filter(p => {
-        const matchesCategory = currentCategory === 'all' || p.category === currentCategory;
-        const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                              p.description.toLowerCase().includes(searchQuery.toLowerCase());
-        return matchesCategory && matchesSearch;
-      });
-
-      if (filtered.length === 0) {
-        grid.innerHTML = '';
-        noResults.classList.remove('hidden');
-        return;
+      const empty = list.length === 0;
+      $('noResults').classList.toggle('hidden', !empty);
+      $('productGrid').classList.toggle('hidden', empty);
+      if (empty) {
+        $('noResultsTitle').textContent = wishlistOnly ? 'No saved items yet' : 'No items match your search';
+        $('noResultsText').textContent = wishlistOnly ? 'Tap the heart on any product to save it here.' : 'Try another keyword or choose a different category.';
+        icons(); return;
       }
 
-      noResults.classList.add('hidden');
-      grid.innerHTML = filtered.map(p => `
-        <div class="bg-white rounded-2xl overflow-hidden border border-stone-200/80 shadow-sm hover:shadow-md transition-shadow flex flex-col group">
-          <div class="relative overflow-hidden aspect-[4/3] bg-stone-200 flex items-center justify-center">
-            <!-- Local image with fallback placeholder -->
-            <img 
-              src="${p.image}" 
-              alt="${p.title}" 
-              loading="lazy"
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'flex flex-col items-center justify-center text-stone-400 p-4 text-center\\'><svg class=\\'w-8 h-8 mb-1 stroke-current\\' fill=\\'none\\' viewBox=\\'0 0 24 24\\' stroke=\\'currentColor\\'><path stroke-linecap=\\'round\\' stroke-linejoin=\\'round\\' stroke-width=\\'1.5\\' d=\\'M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z\\' /></svg><span class=\\'text-[11px] font-semibold\\'>Place in /images</span></div>';"
-            />
-            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-stone-800 text-[11px] font-semibold uppercase px-2.5 py-1 rounded-md tracking-wider">
-              ${p.category}
-            </span>
+      $('productGrid').innerHTML = list.map((p, i) => {
+        const saved = wishlist.includes(p.id);
+        return `
+        <article class="group flex flex-col fade-up" style="animation-delay:${i * 40}ms">
+          <div class="relative rounded-[1.5rem] overflow-hidden">
+            <button onclick="openQuick(${p.id})" class="block w-full aspect-[4/5]" aria-label="View ${esc(p.title)}">
+              ${imageBlock(p, 'w-full h-full group-hover:scale-[1.04] transition-transform duration-700')}
+            </button>
+            <span class="absolute top-3 left-3 bg-white/90 backdrop-blur text-[11px] font-semibold px-3 py-1 rounded-full">${esc(p.category)}</span>
+            <button onclick="toggleWish(${p.id})" class="${saved ? 'heart-on' : ''} absolute top-3 right-3 p-2 bg-white/90 backdrop-blur rounded-full hover:scale-110 transition" aria-label="${saved ? 'Remove from' : 'Add to'} saved items" aria-pressed="${saved}">
+              <i data-lucide="heart" class="w-4 h-4"></i>
+            </button>
+            <button onclick="addToCart(${p.id})" class="absolute bottom-3 left-3 right-3 flex items-center justify-center gap-2 py-3 bg-ink text-white text-sm font-semibold rounded-full opacity-100 lg:opacity-0 lg:translate-y-2 lg:group-hover:opacity-100 lg:group-hover:translate-y-0 lg:focus:opacity-100 transition hover:bg-clay-700">
+              <i data-lucide="plus" class="w-4 h-4"></i> Add to cart
+            </button>
           </div>
-
-          <div class="p-5 flex-1 flex flex-col justify-between">
-            <div>
-              <div class="flex items-center gap-1 text-amber-600 text-xs font-semibold mb-1">
-                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
-                <span>${p.rating}</span>
-              </div>
-              <h4 class="font-bold text-stone-900 group-hover:text-amber-800 transition line-clamp-1">${p.title}</h4>
-              <p class="text-stone-500 text-xs mt-1.5 line-clamp-2 leading-relaxed">${p.description}</p>
+          <div class="pt-4 px-1">
+            <div class="flex items-start justify-between gap-3">
+              <h4 class="font-medium leading-snug">${esc(p.title)}</h4>
+              <span class="font-semibold shrink-0">${money(p.price)}</span>
             </div>
-
-            <div class="mt-5 pt-3 border-t border-stone-100 flex items-center justify-between">
-              <span class="text-lg font-bold text-stone-900">$${p.price.toFixed(2)}</span>
-              <button 
-                onclick="addToCart(${p.id})" 
-                class="flex items-center gap-1.5 px-3.5 py-2 bg-stone-900 hover:bg-amber-700 text-white text-xs font-semibold rounded-lg active:scale-95 transition"
-              >
-                <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add
-              </button>
+            <div class="flex items-center gap-1 mt-1.5 text-xs text-stone-500">
+              <i data-lucide="star" class="w-3.5 h-3.5 fill-amber-500 text-amber-500"></i>
+              <span class="font-semibold text-stone-700">${p.rating.toFixed(1)}</span>
             </div>
           </div>
-        </div>
-      `).join('');
-
-      lucide.createIcons();
+        </article>`;
+      }).join('');
+      icons();
     }
 
-    // Category Filtering
-    function filterByCategory(cat) {
-      currentCategory = cat;
-      document.querySelectorAll('.cat-pill').forEach(btn => {
-        const isActive = (cat === 'all' && btn.innerText.includes('All')) || btn.innerText.includes(cat);
-        if (isActive) {
-          btn.className = 'cat-pill px-5 py-2 rounded-full text-sm font-medium transition bg-stone-900 text-white whitespace-nowrap';
-        } else {
-          btn.className = 'cat-pill px-5 py-2 rounded-full text-sm font-medium transition bg-white text-stone-600 border border-stone-200 hover:border-stone-400 whitespace-nowrap';
-        }
-      });
-      renderProducts();
-    }
+    function renderAll() { renderTabs(); renderProducts(); updateWishBadge(); icons(); }
 
-    // Real-Time Search Handler
-    const handleSearch = (e) => {
+    // ---------- Search & sort ----------
+    const handleSearch = e => {
       searchQuery = e.target.value.trim();
+      $('searchInput').value = e.target.value; $('mobileSearchInput').value = e.target.value;
       renderProducts();
     };
-    document.getElementById('searchInput').addEventListener('input', handleSearch);
-    document.getElementById('mobileSearchInput').addEventListener('input', handleSearch);
+    $('searchInput').addEventListener('input', handleSearch);
+    $('mobileSearchInput').addEventListener('input', handleSearch);
+    $('sortSelect').addEventListener('change', e => { sortBy = e.target.value; renderProducts(); });
 
-    // Cart Functions
-    function addToCart(productId) {
-      const existing = cart.find(item => item.id === productId);
-      if (existing) {
-        existing.quantity += 1;
-      } else {
-        const prod = products.find(p => p.id === productId);
-        cart.push({ ...prod, quantity: 1 });
-      }
+    // ---------- Wishlist ----------
+    function toggleWish(id) {
+      const was = wishlist.includes(id);
+      wishlist = was ? wishlist.filter(x => x !== id) : [...wishlist, id];
+      store.set('hh_wish', wishlist);
+      showToast(was ? 'Removed from saved items' : 'Saved for later');
+      updateWishBadge();
+      if (wishlistOnly) renderProducts(); else renderProducts();
+      if (quickId === id) openQuick(id, true);
+    }
+    function updateWishBadge() {
+      const b = $('wishBadge');
+      b.textContent = wishlist.length;
+      b.classList.toggle('hidden', wishlist.length === 0);
+      b.classList.toggle('flex', wishlist.length > 0);
+      $('wishToggle').classList.toggle('bg-sand-100', wishlistOnly);
+    }
+
+    // ---------- Quick view ----------
+    function openQuick(id, keepQty) {
+      const p = byId(id); if (!p) return;
+      quickId = id; if (!keepQty) quickQty = 1;
+      const saved = wishlist.includes(id);
+      $('quickImage').outerHTML = imageBlock(p, 'aspect-square md:aspect-auto md:min-h-[420px]').replace('class="img-wrap', 'id="quickImage" class="img-wrap');
+      $('quickBody').innerHTML = `
+        <span class="text-xs font-semibold uppercase tracking-widest text-clay-600">${esc(p.category)}</span>
+        <h3 class="font-serif text-2xl sm:text-3xl font-medium leading-tight mt-2">${esc(p.title)}</h3>
+        <div class="flex items-center gap-1.5 mt-3 text-sm"><i data-lucide="star" class="w-4 h-4 fill-amber-500 text-amber-500"></i><strong>${p.rating.toFixed(1)}</strong><span class="text-stone-400">· Customer rating</span></div>
+        <p class="text-stone-600 text-sm leading-relaxed mt-4">${esc(p.description)}</p>
+        <p class="text-2xl font-semibold mt-5">${money(p.price)}</p>
+        <div class="mt-auto pt-7 flex items-center gap-3">
+          <div class="flex items-center border border-sand-300 rounded-full">
+            <button onclick="quickChange(-1)" class="w-10 h-11 hover:bg-sand-100 rounded-l-full" aria-label="Decrease quantity">−</button>
+            <span id="quickQty" class="w-8 text-center text-sm font-semibold">${quickQty}</span>
+            <button onclick="quickChange(1)" class="w-10 h-11 hover:bg-sand-100 rounded-r-full" aria-label="Increase quantity">+</button>
+          </div>
+          <button onclick="addToCart(${p.id}, quickQty); closeQuick()" class="flex-1 bg-ink text-white py-3 rounded-full text-sm font-semibold hover:bg-clay-700 transition">Add to cart</button>
+          <button onclick="toggleWish(${p.id})" class="${saved ? 'heart-on' : ''} p-3 border border-sand-300 rounded-full hover:bg-sand-100" aria-label="Save item"><i data-lucide="heart" class="w-4 h-4"></i></button>
+        </div>`;
+      $('quickModal').classList.remove('hidden'); $('quickModal').classList.add('flex');
+      icons();
+    }
+    function quickChange(d) { quickQty = Math.max(1, Math.min(20, quickQty + d)); $('quickQty').textContent = quickQty; }
+    function closeQuick() { quickId = null; $('quickModal').classList.add('hidden'); $('quickModal').classList.remove('flex'); }
+    $('quickModal').addEventListener('click', e => { if (e.target === $('quickModal')) closeQuick(); });
+
+    // ---------- Cart ----------
+    function addToCart(id, qty = 1) {
+      const existing = cart.find(i => i.id === id);
+      if (existing) existing.quantity += qty; else cart.push({ id, quantity: qty });
       updateCartUI();
       showToast('Added to your basket');
     }
-
-    function changeQuantity(productId, delta) {
-      const item = cart.find(i => i.id === productId);
-      if (!item) return;
+    function changeQuantity(id, delta) {
+      const item = cart.find(i => i.id === id); if (!item) return;
       item.quantity += delta;
-      if (item.quantity <= 0) {
-        cart = cart.filter(i => i.id !== productId);
-      }
+      if (item.quantity <= 0) cart = cart.filter(i => i.id !== id);
       updateCartUI();
     }
+    function removeFromCart(id) { cart = cart.filter(i => i.id !== id); updateCartUI(); }
 
-    function removeFromCart(productId) {
-      cart = cart.filter(i => i.id !== productId);
-      updateCartUI();
+    function totals() {
+      const subtotal = cart.reduce((s, i) => s + byId(i.id).price * i.quantity, 0);
+      const shipping = subtotal === 0 || subtotal >= FREE_SHIPPING_AT ? 0 : SHIPPING_FEE;
+      return { subtotal, shipping, total: subtotal + shipping };
     }
 
     function updateCartUI() {
-      // Counter Badge
-      const totalCount = cart.reduce((acc, item) => acc + item.quantity, 0);
-      document.getElementById('cartCountBadge').innerText = totalCount;
+      store.set('hh_cart', cart);
+      const count = cart.reduce((a, i) => a + i.quantity, 0);
+      $('cartCountBadge').textContent = count;
 
-      // Drawer Content
-      const container = document.getElementById('cartItemList');
-      const checkoutBtn = document.getElementById('openCheckoutBtn');
-
+      const list = $('cartItemList'), btn = $('openCheckoutBtn');
       if (cart.length === 0) {
-        container.innerHTML = `
-          <div class="h-full flex flex-col items-center justify-center text-center text-stone-400 py-12">
-            <i data-lucide="shopping-bag" class="w-12 h-12 stroke-[1.5] mb-2"></i>
-            <p class="text-sm font-medium text-stone-500">Your basket is currently empty</p>
-            <p class="text-xs text-stone-400 mt-1">Browse our collection and add items to begin.</p>
-          </div>
-        `;
-        checkoutBtn.disabled = true;
+        list.innerHTML = `<div class="h-full flex flex-col items-center justify-center text-center py-16 text-stone-400">
+          <i data-lucide="shopping-bag" class="w-12 h-12 stroke-[1.25] mb-3"></i>
+          <p class="text-sm font-semibold text-stone-600">Your basket is empty</p>
+          <p class="text-xs mt-1">Browse the collection and add something you love.</p></div>`;
+        btn.disabled = true;
       } else {
-        container.innerHTML = cart.map(item => `
-          <div class="flex items-center gap-3.5 pb-4 border-b border-stone-100">
-            <img 
-              src="${item.image}" 
-              alt="${item.title}" 
-              class="w-16 h-16 object-cover rounded-xl bg-stone-100 flex-shrink-0"
-              onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\\'http://www.w3.org/2000/svg\\' width=\\'64\\' height=\\'64\\' fill=\\'none\\' stroke=\\'%23999\\'><rect width=\\'100%\\' height=\\'100%\\' fill=\\'%23f3f4f6\\'/><text x=\\'50%\\' y=\\'50%\\' text-anchor=\\'middle\\' font-size=\\'10\\' fill=\\'%23666\\' dy=\\'.3em\\'>Item</text></svg>'"
-            />
+        list.innerHTML = cart.map(i => {
+          const p = byId(i.id);
+          return `<div class="flex gap-4 py-5 border-b border-sand-200 last:border-0">
+            ${imageBlock(p, 'w-20 h-20 rounded-2xl overflow-hidden shrink-0')}
             <div class="flex-1 min-w-0">
-              <h5 class="text-sm font-semibold text-stone-900 truncate">${item.title}</h5>
-              <span class="text-xs text-stone-500 font-medium">$${item.price.toFixed(2)} each</span>
-              <div class="flex items-center gap-2 mt-2">
-                <button onclick="changeQuantity(${item.id}, -1)" class="w-6 h-6 border border-stone-300 rounded flex items-center justify-center text-xs font-bold hover:bg-stone-100">-</button>
-                <span class="text-xs font-bold w-4 text-center">${item.quantity}</span>
-                <button onclick="changeQuantity(${item.id}, 1)" class="w-6 h-6 border border-stone-300 rounded flex items-center justify-center text-xs font-bold hover:bg-stone-100">+</button>
+              <div class="flex justify-between gap-2">
+                <h5 class="text-sm font-medium leading-snug">${esc(p.title)}</h5>
+                <button onclick="removeFromCart(${p.id})" class="text-stone-400 hover:text-rose-600 shrink-0" aria-label="Remove ${esc(p.title)}"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
               </div>
-            </div>
-            <div class="text-right">
-              <span class="text-sm font-bold text-stone-900 block">$${(item.price * item.quantity).toFixed(2)}</span>
-              <button onclick="removeFromCart(${item.id})" class="text-stone-400 hover:text-rose-600 mt-2">
-                <i data-lucide="trash-2" class="w-4 h-4"></i>
-              </button>
-            </div>
-          </div>
-        `).join('');
-        checkoutBtn.disabled = false;
+              <p class="text-xs text-stone-500 mt-0.5">${money(p.price)} each</p>
+              <div class="flex items-center justify-between mt-3">
+                <div class="flex items-center border border-sand-300 rounded-full text-sm">
+                  <button onclick="changeQuantity(${p.id}, -1)" class="w-8 h-8 hover:bg-sand-100 rounded-l-full" aria-label="Decrease quantity">−</button>
+                  <span class="w-6 text-center text-xs font-semibold">${i.quantity}</span>
+                  <button onclick="changeQuantity(${p.id}, 1)" class="w-8 h-8 hover:bg-sand-100 rounded-r-full" aria-label="Increase quantity">+</button>
+                </div>
+                <span class="text-sm font-semibold">${money(p.price * i.quantity)}</span>
+              </div>
+            </div></div>`;
+        }).join('');
+        btn.disabled = false;
       }
 
-      // Totals
-      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-      document.getElementById('cartSubtotal').innerText = `$${subtotal.toFixed(2)}`;
-      document.getElementById('cartTotal').innerText = `$${subtotal.toFixed(2)}`;
-      document.getElementById('checkoutOrderTotal').innerText = `$${subtotal.toFixed(2)}`;
+      const t = totals();
+      $('cartSubtotal').textContent = money(t.subtotal);
+      $('cartShipping').textContent = cart.length === 0 ? '—' : (t.shipping === 0 ? 'Free' : money(t.shipping));
+      $('cartTotal').textContent = money(t.total);
+      $('checkoutOrderTotal').textContent = money(t.total);
 
-      lucide.createIcons();
+      const remaining = FREE_SHIPPING_AT - t.subtotal;
+      $('shipText').innerHTML = t.subtotal === 0
+        ? `Spend <strong>${money(FREE_SHIPPING_AT)}</strong> for free delivery`
+        : remaining > 0
+          ? `You're <strong>${money(remaining)}</strong> away from free delivery`
+          : `<span class="text-emerald-700">You've unlocked free delivery 🎉</span>`;
+      $('shipBar').style.width = Math.min(100, (t.subtotal / FREE_SHIPPING_AT) * 100) + '%';
+      icons();
     }
 
-    // Drawer Visibility
-    const cartModal = document.getElementById('cartModal');
-    const cartDrawer = document.getElementById('cartDrawer');
-    const cartBackdrop = document.getElementById('cartBackdrop');
-
+    // ---------- Drawer ----------
     function openCart() {
-      cartModal.classList.remove('pointer-events-none', 'opacity-0');
-      cartModal.classList.add('opacity-100');
-      cartDrawer.classList.remove('translate-x-full');
+      $('cartModal').classList.remove('pointer-events-none', 'opacity-0');
+      $('cartModal').setAttribute('aria-hidden', 'false');
+      $('cartDrawer').classList.remove('translate-x-full');
     }
-
     function closeCart() {
-      cartDrawer.classList.add('translate-x-full');
-      cartModal.classList.add('opacity-0', 'pointer-events-none');
+      $('cartDrawer').classList.add('translate-x-full');
+      $('cartModal').classList.add('opacity-0', 'pointer-events-none');
+      $('cartModal').setAttribute('aria-hidden', 'true');
     }
+    $('cartOpenBtn').addEventListener('click', openCart);
+    $('cartCloseBtn').addEventListener('click', closeCart);
+    $('cartBackdrop').addEventListener('click', closeCart);
 
-    document.getElementById('cartOpenBtn').addEventListener('click', openCart);
-    document.getElementById('cartCloseBtn').addEventListener('click', closeCart);
-    cartBackdrop.addEventListener('click', closeCart);
+    // ---------- Checkout ----------
+    function openCheckout() {
+      const t = totals();
+      $('checkoutItems').innerHTML = cart.map(i => {
+        const p = byId(i.id);
+        return `<li class="flex justify-between gap-3"><span class="text-stone-600">${esc(p.title)} <span class="text-stone-400">× ${i.quantity}</span></span><span class="font-medium shrink-0">${money(p.price * i.quantity)}</span></li>`;
+      }).join('');
+      $('sumSubtotal').textContent = money(t.subtotal);
+      $('sumShipping').textContent = t.shipping === 0 ? 'Free' : money(t.shipping);
+      $('sumTotal').textContent = money(t.total);
+      $('checkoutFormWrapper').classList.remove('hidden');
+      $('checkoutSuccessWrapper').classList.add('hidden');
+      $('checkoutModal').classList.remove('hidden'); $('checkoutModal').classList.add('flex');
+    }
+    function closeCheckout() { $('checkoutModal').classList.add('hidden'); $('checkoutModal').classList.remove('flex'); }
+    $('openCheckoutBtn').addEventListener('click', () => { closeCart(); openCheckout(); });
+    $('closeCheckoutBtn').addEventListener('click', closeCheckout);
 
-    // Checkout Modal
-    const checkoutModal = document.getElementById('checkoutModal');
-    const openCheckoutBtn = document.getElementById('openCheckoutBtn');
-    const closeCheckoutBtn = document.getElementById('closeCheckoutBtn');
-
-    openCheckoutBtn.addEventListener('click', () => {
-      closeCart();
-      document.getElementById('checkoutFormWrapper').classList.remove('hidden');
-      document.getElementById('checkoutSuccessWrapper').classList.add('hidden');
-      checkoutModal.classList.remove('hidden');
-    });
-
-    closeCheckoutBtn.addEventListener('click', () => {
-      checkoutModal.classList.add('hidden');
-    });
+    function buildWhatsAppMessage(orderNo) {
+      const t = totals();
+      const lines = cart.map((i, n) => {
+        const p = byId(i.id);
+        return `${n + 1}. ${p.title} × ${i.quantity} — ${money(p.price * i.quantity)}`;
+      });
+      const notes = $('f-notes').value.trim();
+      return [
+        `*New order ${orderNo}* — Hearth & Haven`,
+        '',
+        '*Items*',
+        ...lines,
+        '',
+        `Subtotal: ${money(t.subtotal)}`,
+        `Shipping: ${t.shipping === 0 ? 'Free' : money(t.shipping)}`,
+        `*Total: ${money(t.total)}*`,
+        '',
+        '*Delivery details*',
+        `Name: ${$('f-name').value.trim()}`,
+        `Phone: ${$('f-phone').value.trim()}`,
+        `Address: ${$('f-addr').value.trim()}`,
+        `City: ${$('f-city').value.trim()}`,
+        `Postal code: ${$('f-zip').value.trim()}`,
+        ...(notes ? [`Notes: ${notes}`] : [])
+      ].join('\n');
+    }
 
     function handleOrderSubmit(e) {
       e.preventDefault();
-      document.getElementById('checkoutFormWrapper').classList.add('hidden');
-      document.getElementById('checkoutSuccessWrapper').classList.remove('hidden');
-      cart = [];
-      updateCartUI();
-      lucide.createIcons();
-    }
+      if (cart.length === 0) return;
+      const orderNo = '#HH-' + Math.floor(100000 + Math.random() * 900000);
+      const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(buildWhatsAppMessage(orderNo))}`;
 
-    function dismissCheckoutSuccess() {
-      checkoutModal.classList.add('hidden');
-    }
+      // Open WhatsApp (inside the click/submit gesture so popup blockers allow it)
+      window.open(url, '_blank', 'noopener');
 
-    // Popup Toast
+      $('orderNumber').textContent = orderNo;
+      $('waRetryLink').href = url;
+      $('checkoutFormWrapper').classList.add('hidden');
+      $('checkoutSuccessWrapper').classList.remove('hidden');
+      $('checkoutForm').reset();
+      cart = []; updateCartUI();
+      icons();
+    }
+    function dismissCheckoutSuccess() { closeCheckout(); }
+
+    // ---------- Misc ----------
+    let toastTimer;
     function showToast(msg) {
-      const toast = document.getElementById('toast');
-      document.getElementById('toastMessage').innerText = msg;
-      toast.classList.remove('translate-y-24');
-      setTimeout(() => {
-        toast.classList.add('translate-y-24');
-      }, 2000);
+      $('toastMessage').textContent = msg;
+      $('toast').classList.remove('translate-y-24', 'opacity-0');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => $('toast').classList.add('translate-y-24', 'opacity-0'), 2200);
     }
+    function subscribe(e) { e.preventDefault(); e.target.reset(); showToast('Thanks — you\'re subscribed'); }
 
-    // Initial render
-    renderProducts();
+    document.addEventListener('keydown', e => {
+      if (e.key !== 'Escape') return;
+      closeCart(); closeQuick(); closeCheckout();
+    });
+
+    // ---------- Init ----------
+    $('year').textContent = new Date().getFullYear();
+    renderAll();
     updateCartUI();
   </script>
 </body>
